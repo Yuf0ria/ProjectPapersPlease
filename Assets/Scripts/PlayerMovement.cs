@@ -28,10 +28,10 @@ public class PlayerMovement : MonoBehaviour
                 transform.position = movePos;
             }
         }
-
+        
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
-        Vector3 movement = new Vector3(x, 0, z);
+        Vector3 movement = new Vector3(x, 1, z);
         rb.linearVelocity = movement * speed;
         
         if(x != 0 && x < 0)
@@ -39,5 +39,21 @@ public class PlayerMovement : MonoBehaviour
         else if (x != 0 && x > 0)
             sr.flipX = false;
         
+    }
+
+    void OnCollisionEnter( Collision collision )
+    {
+        if (collision.collider.tag == "Chair")
+        {
+            Debug.Log("obj is chair");
+            //player moves 'chair' 
+            Vector3 moveChair = collision.transform.position - transform.position;
+            double ogPos = 0.08;
+            moveChair.y = (float)ogPos;
+            collision.transform.position = moveChair;
+            float forceMagnitude = 1f;
+            collision.gameObject.GetComponent<Rigidbody>().AddForce(-moveChair * forceMagnitude);
+
+        }
     }
 }
