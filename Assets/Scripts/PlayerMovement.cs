@@ -1,3 +1,4 @@
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -21,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
         raycastPos.y += 1;
         if (Physics.Raycast(raycastPos, -transform.up, out hit, Mathf.Infinity, groundLayer))
         {
+            //funniest shit happened: player sprite flew to the sun when out of bounds
             if (hit.collider != null)
             {
                 Vector3 movePos = transform.position;
@@ -28,6 +30,8 @@ public class PlayerMovement : MonoBehaviour
                 transform.position = movePos;
             }
         }
+        else
+            Debug.Log("Bye");
         
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
@@ -41,19 +45,5 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
-    void OnCollisionEnter( Collision collision )
-    {
-        if (collision.collider.tag == "Chair")
-        {
-            Debug.Log("obj is chair");
-            //player moves 'chair' 
-            Vector3 moveChair = collision.transform.position - transform.position;
-            double ogPos = 0.08;
-            moveChair.y = (float)ogPos;
-            collision.transform.position = moveChair;
-            float forceMagnitude = 1f;
-            collision.gameObject.GetComponent<Rigidbody>().AddForce(-moveChair * forceMagnitude);
 
-        }
-    }
 }

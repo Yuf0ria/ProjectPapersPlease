@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Chair
+  - Paper
   layers:
   - Default
   - TransparentFX
